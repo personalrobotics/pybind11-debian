@@ -9,12 +9,8 @@ export PYBIND11_USE_CMAKE=1
 export PYBUILD_NAME=pybind11
 
 CONFIGURE_ARGS=-DPYBIND11_INSTALL:BOOL=ON
-ifeq (,$(filter nocheck,$(DEB_BUILD_OPTIONS)))
-CONFIGURE_ARGS+=-DPYBIND11_TEST:BOOL=ON \
-	-DPYTHON_EXECUTABLE:FILEPATH=/usr/bin/$(shell py3versions -d)
-else
+# Disable building test because the required pytest >= 3.0 is not available on Xenial
 CONFIGURE_ARGS+=-DPYBIND11_TEST:BOOL=OFF
-endif
 
 %:
 	dh $@ --with python2,python3,sphinxdoc --buildsystem=cmake
